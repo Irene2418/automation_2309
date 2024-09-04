@@ -5,20 +5,20 @@ B=[0;0;49.7275;-49.1493];%4*1
 C=[1,0,0,0;0,1,0,0];%2*4
 D=[0;0];%2*1
 NN=10000;
-[A_d,B_d,C_d,D_d]=c2dm(A,B,C,D,0.1);%Á¬ĞøÊ±¼äÏµÍ³ÀëÉ¢»¯
+[A_d,B_d,C_d,D_d]=c2dm(A,B,C,D,0.1);%è¿ç»­æ—¶é—´ç³»ç»Ÿç¦»æ•£åŒ–
 A_d %n*n
 B_d %n*m
 C_d %l*n
 D_d %l*m
 
-% N4SIDËã·¨
-m = 1;%ÊäÈëÎ¬Êı
-%n = 4;×´Ì¬Î¬Êı
-l = 2;%Êä³öÎ¬Êı
-i = 6;  %£¾n
-j = 3500; %£¾£¾n
+% N4SIDç®—æ³•
+m = 1;%è¾“å…¥ç»´æ•°
+%n = 4;çŠ¶æ€ç»´æ•°
+l = 2;%è¾“å‡ºç»´æ•°
+i = 6;  %ï¼n
+j = 3500; %ï¼ï¼n
 
-% ¹¹½¨×´Ì¬ºÍÊä³ö¾ØÕó
+% æ„å»ºçŠ¶æ€å’Œè¾“å‡ºçŸ©é˜µ
 %u=idinput(NN, 'rbs');
 
 x=zeros(4, NN+1);
@@ -36,7 +36,7 @@ for k=1:NN
     y(:,k)=C_d*x(:, k);
 end
 
-%¹¹ÔìHankel¾ØÕó
+%æ„é€ HankelçŸ©é˜µ
 Yp=zeros(i*l,j);
 Up=zeros(i*m,j);
 Yf=zeros(i*l,j);
@@ -57,17 +57,17 @@ for k1=1:i*m
 end
 Wp=[Up;Yp];
 
-%¸ù¾İ¶¨ÒåÇóĞ±ÏòÍ¶Ó°Yf/UfWp
-UWP=pinv([Wp;Uf]*[Wp' Uf']);%Ğ±ÏòÍ¶Ó°¾ØÕó¶ÔÓ¦µÄ´ó¾ØÕó?
+%æ ¹æ®å®šä¹‰æ±‚æ–œå‘æŠ•å½±Yf/UfWp
+UWP=pinv([Wp;Uf]*[Wp' Uf']);%æ–œå‘æŠ•å½±çŸ©é˜µå¯¹åº”çš„å¤§çŸ©é˜µ?
 Oi=Yf*[Wp' Uf']*UWP(:,1:i*m+i*l)*Wp;%Oi=Yf/UfWp
 
-[UU,SS,VV]=svd(Oi);%ÆæÒìÖµ·Ö½â£¬UU=[U1,U2]£¬SS=diag[S1 S2],VV=[V1^T,V2^T]^T
-n=4;%ÈË¹¤ºËÑéSSÖ÷µ¼ÆæÒìÖµµÄ½×´Î
+[UU,SS,VV]=svd(Oi);%å¥‡å¼‚å€¼åˆ†è§£ï¼ŒUU=[U1,U2]ï¼ŒSS=diag[S1 S2],VV=[V1^T,V2^T]^T
+n=4;%äººå·¥æ ¸éªŒSSä¸»å¯¼å¥‡å¼‚å€¼çš„é˜¶æ¬¡
 U1=UU(:,1:n);
 S1=SS(1:n,1:n);
-T=[1 2 3 4;0 1 0 0; 0 0 1 0; 0 0 0 1];%ÈÎÒâÒ»¸ö¿ÉÄæ¾ØÕó?
-VVT=VV';%VµÄ×ªÖÃ?
-V1T=VVT(1:n,:);%V1µÄ×ªÖÃ?
+T=[1 2 3 4;0 1 0 0; 0 0 1 0; 0 0 0 1];%ä»»æ„ä¸€ä¸ªå¯é€†çŸ©é˜µ?
+VVT=VV';%Vçš„è½¬ç½®?
+V1T=VVT(1:n,:);%V1çš„è½¬ç½®?
 Gammai=U1*sqrtm(S1)*T;
 Xf=inv(T)*sqrtm(S1)*V1T;
 Xip1jm1=Xf(:,2:j);%X_{i+1,j-1}
@@ -75,11 +75,11 @@ Xijm1=Xf(:,1:j-1);%X_{i,j-1}
 Uijm1=zeros(m,j-1);%U_{i,j-1}
 Yijm1=zeros(l,j-1);%Y_{i,j-1}
 for k1=1:j-1
-    Uijm1(:,k1)=u(i+k1);%U_{i,j-1}¾ßÌå¸³Öµ??
-    Yijm1(:,k1)=y(:,i+k1);%Y_{i,j-1}¾ßÌå¸³Öµ??
+    Uijm1(:,k1)=u(i+k1);%U_{i,j-1}å…·ä½“èµ‹å€¼??
+    Yijm1(:,k1)=y(:,i+k1);%Y_{i,j-1}å…·ä½“èµ‹å€¼??
 end
-hatABCD=[Xip1jm1;Yijm1]*[Xijm1;Uijm1]'*inv([Xijm1;Uijm1]*[Xijm1;Uijm1]');%ÀûÓÃ×îĞ¡¶ş³ËÇó½â[A B;C D]¾ØÕó
-AT=hatABCD(1:n,1:n)%hatABCDµÄÇ°nĞĞnÁĞÎªA¾ØÕó
+hatABCD=[Xip1jm1;Yijm1]*[Xijm1;Uijm1]'*inv([Xijm1;Uijm1]*[Xijm1;Uijm1]');%åˆ©ç”¨æœ€å°äºŒä¹˜æ±‚è§£[A B;C D]çŸ©é˜µ
+AT=hatABCD(1:n,1:n)%hatABCDçš„å‰nè¡Œnåˆ—ä¸ºAçŸ©é˜µ
 BT=hatABCD(1:n,n+1:n+m)
 CT=hatABCD(n+1:n+l,1:n)
 DT=hatABCD(n+1:n+l,n+1:n+m)
@@ -89,7 +89,7 @@ for k=1:NN
     yT(:,k)=CT*xT(:,k)+DT*u(k);
     t(k)=k-1;
 end
-%»æÖÆÇ°200¸öÊı¾İ
+%ç»˜åˆ¶å‰200ä¸ªæ•°æ®
 ltext={'y(k)','yT(k)'};
 h(1,1)=plot(t(1:200),y(1:200),'-b','LineWidth',2);hold on;
 h(2,1)=plot(t(1:200),yT(1:200),'--r','LineWidth',2);hold off;
